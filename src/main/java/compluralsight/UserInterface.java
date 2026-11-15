@@ -21,24 +21,43 @@ public class UserInterface {
         do {
             printDisplayScreen();
             int choice = inputScanner.nextInt();
+            inputScanner.nextLine();
 
             switch (choice) {
-                case 1 : processGetByPriceRequest(); break;
-                case 2 : processGetByMakeModelRequest(); break;
-                case 3 : processGetByYearRequest(); break;
-                case 4 : processGetByColorRequest(); break;
-                case 5 : processGetByMileageRequest(); break;
-                case 6 : processGetByVehicleTypeRequest(); break;
-                case 7 : processGetAllVehiclesRequest(); break;
-                case 8 : processAddVehicleRequest(); break;
-                case 9 : processRemoveVehicleRequest(); break;
-                case 0 : {
+                case 1:
+                    processGetByPriceRequest();
+                    break;
+                case 2:
+                    processGetByMakeModelRequest();
+                    break;
+                case 3:
+                    processGetByYearRequest();
+                    break;
+                case 4:
+                    processGetByColorRequest();
+                    break;
+                case 5:
+                    processGetByMileageRequest();
+                    break;
+                case 6:
+                    processGetByVehicleTypeRequest();
+                    break;
+                case 7:
+                    processGetAllVehiclesRequest();
+                    break;
+                case 8:
+                    processAddVehicleRequest();
+                    break;
+                case 9:
+                    processRemoveVehicleRequest();
+                    break;
+                case 0: {
                     System.out.println("GoodBye!");
                     isRunning = false;
                     break;
                 }
                 default:
-                    System.out.println("Invalid option. Please choose: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0");;
+                    System.out.println("Invalid option. Please choose: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0");
             }
         } while (isRunning);
     }
@@ -50,9 +69,10 @@ public class UserInterface {
 
         System.out.println("Enter maximum price: ");
         BigDecimal max = inputScanner.nextBigDecimal();
+        inputScanner.nextLine();
 
         List<Vehicle> vehicles = dealership.getVehiclesByPrice(min, max);
-        printDealershipTable(vehicles);;
+        printDealershipTable(vehicles);
         pressEnterToContinue();
     }
 
@@ -163,7 +183,31 @@ public class UserInterface {
     }
 
     public void processRemoveVehicleRequest() {
+        System.out.println("===== Remove A Vehicle =====");
+        System.out.print("Enter the VIN of the vehicle to remove: ");
+        int vinToRemove = inputScanner.nextInt();
+        inputScanner.nextLine();
 
+        Vehicle vehicleToRemove = null;
+        for (Vehicle vehicle : dealership.getAllVehicles()) {
+            if (vehicle.getVin() == vinToRemove) {
+                vehicleToRemove = vehicle;
+                break;
+            }
+        }
+
+        if (vehicleToRemove != null) {
+            dealership.removeVehicle(vehicleToRemove);
+
+            DealershipFileManager fileManager = new DealershipFileManager();
+            fileManager.saveDealership(dealership);
+
+            System.out.println("Vehicle with VIN " + vinToRemove + " has been removed and saved.");
+        } else {
+            System.out.println("No vehicle found with VIN " + vinToRemove);
+        }
+
+        pressEnterToContinue();
     }
 
     public static void printDisplayScreen() {
