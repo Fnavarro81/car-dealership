@@ -84,15 +84,37 @@ public class UserInterface {
     }
 
     public void processGetByColorRequest() {
+        System.out.println("===== Search By Color =====");
+        System.out.print("Enter color: ");
+        String color = inputScanner.nextLine();
 
+        List<Vehicle> vehicles = dealership.getVehiclesByColor(color);
+        printDealershipTable(vehicles);
+        pressEnterToContinue();
     }
 
     public void processGetByMileageRequest() {
+        System.out.println("===== Search By Mileage =====");
+        System.out.print("Enter minimum mileage: ");
+        int min = inputScanner.nextInt();
 
+        System.out.print("Enter maximum mileage: ");
+        int max = inputScanner.nextInt();
+        inputScanner.nextLine();
+
+        List<Vehicle> vehicles = dealership.getVehiclesByMileage(min, max);
+        printDealershipTable(vehicles);
+        pressEnterToContinue();
     }
 
     public void processGetByVehicleTypeRequest() {
+        System.out.println("===== Search By Vehicle Type =====");
+        System.out.print("Enter vehicle type (e.g., SUV, Truck, Sedan): ");
+        String type = inputScanner.nextLine();
 
+        List<Vehicle> vehicles = dealership.getVehiclesByType(type);
+        printDealershipTable(vehicles);
+        pressEnterToContinue();
     }
 
     public void processGetAllVehiclesRequest() {
