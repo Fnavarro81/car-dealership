@@ -17,6 +17,10 @@ public class Dealership {
         this.inventory = new ArrayList<Vehicle>();
     }
 
+    public Dealership() {
+        this.inventory = new ArrayList<Vehicle>();
+    }
+
     public String getName() {
         return name;
     }
@@ -42,7 +46,17 @@ public class Dealership {
     }
 
     public List<Vehicle> getVehiclesByPrice(BigDecimal min, BigDecimal max) {
-        return null;
+        ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
+
+        if (inventory == null) {
+            return filteredVehicles;
+        }
+        for (Vehicle vehicle : inventory) {
+            if (vehicle.getPrice().compareTo(min) >= 0 && vehicle.getPrice().compareTo(max) <= 0) {
+                filteredVehicles.add(vehicle);
+            }
+        }
+        return filteredVehicles;
     }
 
     public List<Vehicle> getVehiclesBYMakeModel(String make, String model) {
@@ -63,6 +77,10 @@ public class Dealership {
 
     public List<Vehicle> getVehiclesByType(String vehicleTypo) {
         return null;
+    }
+
+    public List<Vehicle> getAllVehicles() {
+        return inventory;
     }
 
     public void addVehicle(Vehicle vehicle) {
