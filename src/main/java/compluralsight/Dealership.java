@@ -59,7 +59,7 @@ public class Dealership {
         return filteredVehicles;
     }
 
-    public List<Vehicle> getVehiclesBYMakeModel(String make, String model) {
+    public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
         ArrayList<Vehicle> filteredVehicles = new ArrayList<>();
 
         if (inventory == null) {

@@ -1,9 +1,6 @@
 package compluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
@@ -44,6 +41,29 @@ public class DealershipFileManager {
     }
 
     public void saveDealership(Dealership dealership) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/WorkshopFiles (2)/WorkshopFiles/inventory.csv"))) {
 
+            String header = dealership.getName() + "|" + dealership.getAddress() + "|" + dealership.getPhone();
+            bufferedWriter.write(header);
+            bufferedWriter.newLine();
+
+            for (Vehicle vehicle : dealership.getAllVehicles()) {
+                String vehicleLine = String.format("%d|%d|%s|%s|%s|%s|%d|%s",
+                        vehicle.getVin(),
+                        vehicle.getYear(),
+                        vehicle.getMake(),
+                        vehicle.getModel(),
+                        vehicle.getType(),
+                        vehicle.getColor(),
+                        vehicle.getOdometer(),
+                        vehicle.getPrice()
+                );
+                bufferedWriter.write(vehicleLine);
+                bufferedWriter.newLine();
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

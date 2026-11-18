@@ -20,8 +20,7 @@ public class UserInterface {
 
         do {
             printDisplayScreen();
-            int choice = inputScanner.nextInt();
-            inputScanner.nextLine();
+            int choice = promptForMenuChoice();
 
             switch (choice) {
                 case 1:
@@ -62,6 +61,26 @@ public class UserInterface {
         } while (isRunning);
     }
 
+    private int promptForMenuChoice() {
+        return promptForInt("Enter your choice: ", 0, 9);
+    }
+
+    private int promptForInt(String prompt, int min, int max) {
+        while (true) {
+            System.out.print(prompt);
+            String input = inputScanner.nextLine();
+            try {
+                int value = Integer.parseInt(input.trim());
+                if (value >= min && value <= max) {
+                    return value;
+                }
+                System.out.println("Please enter a number between " + min + " and " + max + ".");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+
     public void processGetByPriceRequest() {
         System.out.println("===== Search By Price =====");
         System.out.println("Enter minimum price: ");
@@ -84,7 +103,7 @@ public class UserInterface {
         System.out.print("Enter model: ");
         String model = inputScanner.nextLine();
 
-        List<Vehicle> vehicles = dealership.getVehiclesBYMakeModel(make, model);
+        List<Vehicle> vehicles = dealership.getVehiclesByMakeModel(make, model);
         printDealershipTable(vehicles);
         pressEnterToContinue();
     }
@@ -254,7 +273,7 @@ public class UserInterface {
                     vehicle.getModel(),
                     vehicle.getColor(),
                     vehicle.getType(),
-                    vehicle.getPrice());
+                    vehicle.getPrice().doubleValue());
         }
     }
 
