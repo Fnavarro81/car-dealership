@@ -65,6 +65,18 @@ public class UserInterface {
         return promptForInt("Enter your choice: ", 0, 9);
     }
 
+    private int promptForInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = inputScanner.nextLine();
+            try {
+                return Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+
     private int promptForInt(String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
@@ -81,14 +93,22 @@ public class UserInterface {
         }
     }
 
+    private BigDecimal promptForBigDecimal(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = inputScanner.nextLine();
+            try {
+                return new BigDecimal(input.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid decimal number (e.g., 15000.00).");
+            }
+        }
+    }
+
     public void processGetByPriceRequest() {
         System.out.println("===== Search By Price =====");
-        System.out.println("Enter minimum price: ");
-        BigDecimal min = inputScanner.nextBigDecimal();
-
-        System.out.println("Enter maximum price: ");
-        BigDecimal max = inputScanner.nextBigDecimal();
-        inputScanner.nextLine();
+        BigDecimal min = promptForBigDecimal("Enter minimum price: ");
+        BigDecimal max = promptForBigDecimal("Enter maximum price: ");
 
         List<Vehicle> vehicles = dealership.getVehiclesByPrice(min, max);
         printDealershipTable(vehicles);
@@ -110,12 +130,8 @@ public class UserInterface {
 
     public void processGetByYearRequest() {
         System.out.println("===== Search By Year =====");
-        System.out.print("Enter minimum year: ");
-        int min = inputScanner.nextInt();
-
-        System.out.print("Enter maximum year: ");
-        int max = inputScanner.nextInt();
-        inputScanner.nextLine();
+        int min = promptForInt("Enter minimum year: ");
+        int max = promptForInt("Enter maximum year: ");
 
         List<Vehicle> vehicles = dealership.getVehiclesByYear(min, max);
         printDealershipTable(vehicles);
@@ -134,12 +150,8 @@ public class UserInterface {
 
     public void processGetByMileageRequest() {
         System.out.println("===== Search By Mileage =====");
-        System.out.print("Enter minimum mileage: ");
-        int min = inputScanner.nextInt();
-
-        System.out.print("Enter maximum mileage: ");
-        int max = inputScanner.nextInt();
-        inputScanner.nextLine();
+        int min = promptForInt("Enter minimum mileage: ");
+        int max = promptForInt("Enter maximum mileage: ");
 
         List<Vehicle> vehicles = dealership.getVehiclesByMileage(min, max);
         printDealershipTable(vehicles);
@@ -165,15 +177,9 @@ public class UserInterface {
 
     public void processAddVehicleRequest() {
         System.out.println("===== Add A Vehicle =====");
-        System.out.print("Enter VIN: ");
-        int vin = inputScanner.nextInt();
-
-        System.out.print("Enter Year: ");
-        int year = inputScanner.nextInt();
-
-        System.out.print("Enter Odometer: ");
-        int odometer = inputScanner.nextInt();
-        inputScanner.nextLine();
+        int vin = promptForInt("Enter VIN: ");
+        int year = promptForInt("Enter Year: ");
+        int odometer = promptForInt("Enter Odometer: ");
 
         System.out.print("Enter Make: ");
         String make = inputScanner.nextLine();
@@ -187,9 +193,7 @@ public class UserInterface {
         System.out.print("Enter Type: ");
         String type = inputScanner.nextLine();
 
-        System.out.print("Enter Price: ");
-        BigDecimal price = inputScanner.nextBigDecimal();
-        inputScanner.nextLine();
+        BigDecimal price = promptForBigDecimal("Enter Price: ");
 
         Vehicle newVehicle = new Vehicle(vin, year, odometer, make, model, color, type, price);
         dealership.addVehicle(newVehicle);
@@ -203,9 +207,7 @@ public class UserInterface {
 
     public void processRemoveVehicleRequest() {
         System.out.println("===== Remove A Vehicle =====");
-        System.out.print("Enter the VIN of the vehicle to remove: ");
-        int vinToRemove = inputScanner.nextInt();
-        inputScanner.nextLine();
+        int vinToRemove = promptForInt("Enter the VIN of the vehicle to remove: ");
 
         Vehicle vehicleToRemove = null;
         for (Vehicle vehicle : dealership.getAllVehicles()) {
@@ -228,6 +230,7 @@ public class UserInterface {
 
         pressEnterToContinue();
     }
+
 
     public static void printDisplayScreen() {
         System.out.println("===== Welcome =====");
